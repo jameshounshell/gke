@@ -1,0 +1,91 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: external-dns
+  namespace: default
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: external-dns
+rules:
+- apiGroups: [""]
+  resources: ["namespaces"]
+  verbs: ["get", "watch", "list"]
+- apiGroups: ["gateway.networking.k8s.io"]
+  resources: ["gateways", "httproutes", "grpcroutes", "tlsroutes", "tcproutes", "udproutes"]
+  verbs: ["get", "watch", "list"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: external-dns
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: external-dns
+subjects:
+- kind: ServiceAccount
+  name: external-dns
+  namespace: default
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: external-dns
+spec:
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: external-dns
+  template:
+    metadata:
+      labels:
+        app: external-dns
+    spec:
+      serviceAccountName: external-dns
+      containers:
+      - name: external-dns
+        image: registry.k8s.io/external-dns/external-dns:v0.13.1
+        args:
+        # external-dns-568989447b-4fppz external-dns time="2023-10-01T22:57:06Z" level=fatal msg="flag parsing error: enum value must be one of service,ingress,node,pod,gateway-httproute,gateway-tlsroute,gateway-tcproute,gateway-udproute,istio-gateway,istio-virtualservice,cloudfoundry,contour-ingressroute,contour-httpproxy,gloo-proxy,fake,connector,crd,empty,skipper-routegroup,openshift-route,ambassador-host,kong-tcpingress, got 'gateway-grpcroute'"
+
+
+
+        # sources (only one source allowed)
+        # - --source=service # ingress is also possible
+        - --source=gateway-httproute
+        # - --source=gateway-grpcroute
+        # - --source=gateway-tlsroute
+        # - --source=gateway-tcproute
+        # - --source=gateway-udproute
+        # Optionally, limit Routes to those in the given namespace.
+        # - --namespace=my-route-namespace
+        # Optionally, limit Routes to those matching the given label selector.
+        # - --label-filter=my-route-label==my-route-value
+        # Optionally, limit Route endpoints to those Gateways in the given namespace.
+        # - --gateway-namespace=my-gateway-namespace
+        # Optionally, limit Route endpoints to those Gateways matching the given label selector.
+        # - --gateway-label-filter=my-gateway-label==my-gateway-value
+
+        # fix txt prefix
+        - --txt-prefix=external-dns%{record_type}.
+
+        # provider specific flags
+        - --domain-filter=meatcloud.io # (optional) limit to only example.com domains; change to match the zone created above.
+        #- --zone-id-filter=a511c399b798603163622af6304d6183 # (optional) limit to a specific zone.
+        - --provider=cloudflare
+        - --cloudflare-proxied # (optional) enable the proxy feature of Cloudflare (DDOS protection, CDN...)
+        env:
+        - name: CF_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: cloudflare-api-key
+              key: api-key
+        - name: CF_API_EMAIL
+          value: jameshounshell@gmail.com
+        resources:
+          limits:
+            cpu: 125m
+            memory: 125Mi

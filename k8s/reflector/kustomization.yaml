@@ -1,0 +1,13 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: reflector
+
+
+helmCharts:
+- name: reflector
+  # https://github.com/emberstack/kubernetes-reflector/blob/main/README.md
+  includeCRDs: true
+  # valuesInline:
+  releaseName: reflector
+  version: 7.1.203
+  repo: https://emberstack.github.io/helm-charts

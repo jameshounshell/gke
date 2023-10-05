@@ -1,0 +1,11 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: argocd
+  namespace: shared
+spec:
+  type: ExternalName
+  externalName: argocd-server.argocd.svc.cluster.local #or any external svc
+  ports:
+    - port: 8080 #specify the port of service you want to expose
+      targetPort: 8080 #port of external service

@@ -1,0 +1,34 @@
+kind: Gateway
+apiVersion: gateway.networking.k8s.io/v1beta1
+metadata:
+  name: external-http
+  # annotations:
+  #   networking.gke.io/certmap: store-example-com-map
+spec:
+  gatewayClassName: gke-l7-global-external-managed
+  listeners:
+  - name: https-root
+    protocol: HTTPS
+    port: 443
+    hostname: "meatcloud.io"
+    allowedRoutes:
+      namespaces:
+        from: All
+    tls:
+      mode: Terminate
+      certificateRefs:
+      - name: wildcard-meatcloud-io
+  - name: https-wildcard
+    protocol: HTTPS
+    port: 443
+    hostname: "*.meatcloud.io"
+    allowedRoutes:
+      namespaces:
+        from: All
+    tls:
+      mode: Terminate
+      certificateRefs:
+      - name: wildcard-meatcloud-io
+  # addresses:
+  # - type: NamedAddress
+  #   value: meatcloud

@@ -1,0 +1,21 @@
+# issuer-lets-encrypt-staging.yaml
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-production
+spec:
+  acme:
+    server: https://acme-v02.api.letsencrypt.org/directory
+    email: jameshounshell@gmail.com # ❗ Replace this with your email address
+    privateKeySecretRef:
+      name: letsencrypt-production
+    solvers:
+    # - http01:
+    #     ingress:
+    #       name: web-ingress3
+    - dns01:
+        cloudflare:
+          email: jameshounshell@gmail.com
+          apiKeySecretRef:
+            name: cloudflare-api-key
+            key: api-key

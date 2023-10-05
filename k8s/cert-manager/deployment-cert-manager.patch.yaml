@@ -1,0 +1,17 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cert-manager
+  namespace: cert-manager
+spec:
+  template:
+    spec:
+      containers:
+      - name: cert-manager-controller
+        args:
+        - --v=2
+        - --cluster-resource-namespace=$(POD_NAMESPACE)
+        - --leader-election-namespace=kube-system
+        - --feature-gates=ExperimentalGatewayAPISupport=true
+        - --acme-http01-solver-image=quay.io/jetstack/cert-manager-acmesolver:v1.13.0
+        - --max-concurrent-challenges=60

@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: hello-world
+  namespace: shared
+spec:
+  type: NodePort
+  selector:
+    greeting: hello
+    version: one
+  ports:
+    - protocol: TCP
+      port: 60000
+      targetPort: 50000
