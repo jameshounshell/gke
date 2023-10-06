@@ -6,8 +6,8 @@ I stood this up to explore technologies I use at work, but in more depth and fro
 
 Other than initial bootstrapping I use GitOps/ArgoCD to keep the cluster in sync with these manifests.
 
+Most of the installs are from helm charts - https://artifacthub.io
 
-
-Helm
-====
-https://artifacthub.io
+Install
+=======
+#TODO

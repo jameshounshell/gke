@@ -1,8 +1,7 @@
 kind: HTTPRoute
 apiVersion: gateway.networking.k8s.io/v1beta1
 metadata:
-  name: guestbook
-  namespace: demo
+  name: store-external
   labels:
     gateway: external-http
 spec:
@@ -10,8 +9,8 @@ spec:
   - name: external-http
     namespace: gateway-system
   hostnames:
-  - "guestbook.meatcloud.io"
+  - "meatcloud.io"
   rules:
   - backendRefs:
-    - name: kustomize-guestbook-ui
-      port: 80
+    - name: web
+      port: 8080

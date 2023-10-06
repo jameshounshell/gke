@@ -6,3 +6,15 @@ resources:
 - ./application-demo.yaml
 - "./application-argocd.yaml"
 - "./application-prometheus.yaml"
+
+
+# TODO: setup local chart to DRY out argo apps
+# helmCharts:
+# - name: grafana
+#   valuesInline:
+#     name: grafana
+#   repo: application
+#   releaseName: applicaton
+
+# helmGlobals:
+#   chartHome: "../../charts"
