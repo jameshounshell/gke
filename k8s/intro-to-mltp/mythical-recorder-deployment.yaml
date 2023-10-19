@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose --file ../../docker-compose.yml convert
+    kompose.version: 1.31.2 (HEAD)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: mythical-recorder
+  name: mythical-recorder
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: mythical-recorder
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose --file ../../docker-compose.yml convert
+        kompose.version: 1.31.2 (HEAD)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/intro-to-mltp-default: "true"
+        io.kompose.service: mythical-recorder
+    spec:
+      containers:
+        - env:
+            - name: LOGS_TARGET
+              value: http://loki:3100/loki/api/v1/push
+            - name: NAMESPACE
+              value: production
+            - name: OTEL_EXPORTER_OTLP_TRACES_INSECURE
+              value: "true"
+            - name: OTEL_RESOURCE_ATTRIBUTES
+              value: ip=1.2.3.5
+            - name: TRACING_COLLECTOR_HOST
+              value: agent
+            - name: TRACING_COLLECTOR_PORT
+              value: "4317"
+          image: mythical-recorder
+          name: mythical-recorder
+          ports:
+            - containerPort: 4002
+              hostPort: 4002
+              protocol: TCP
+          resources: {}
+      restartPolicy: Always
+status: {}

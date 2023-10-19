@@ -1,6 +1,21 @@
 charts
 .render
 
+# Terraform files
+.terraform/
+terraform.tfstate
+terraform.tfstate.backup
+*.tfplan
+*.tfstate
+*.tfstate.backup
+*.tfvars
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+.terraformrc
+terraform.rc
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

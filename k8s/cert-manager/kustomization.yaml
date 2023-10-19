@@ -3,21 +3,25 @@ kind: Kustomization
 namespace: cert-manager
 
 # dont use the helm chart it's bad
-# helmCharts:
-# - name: cert-manager
-#   # https://cert-manager.io/docs/installation/helm/
-#   includeCRDs: false
-#   valuesInline:
-#     cainjector:
-#       enabled: true
-#   releaseName: cert-manager
-#   version: v1.13.0
-#   repo: https://charts.jetstack.io
+helmCharts:
+- name: cert-manager
+  # https://cert-manager.io/docs/installation/helm/
+  includeCRDs: true
+  valuesInline:
+    leaderElection:
+      namespace: cert-manager
+    cainjector:
+      enabled: true
+  namespace: cert-manager
+  releaseName: cert-manager
+  version: v1.13.0
+  repo: https://charts.jetstack.io
 
 resources:
-- https://github.com/cert-manager/cert-manager/releases/download/v1.13.0/cert-manager.yaml
+# - https://github.com/cert-manager/cert-manager/releases/download/v1.13.0/cert-manager.yaml
 - clusterissuer-lets-encrypt-staging.yaml
 - clusterissuer-lets-encrypt-production.yaml
 
 patches:
 - path: deployment-cert-manager.patch.yaml
+- path: deployment-cainjector.patch.yaml

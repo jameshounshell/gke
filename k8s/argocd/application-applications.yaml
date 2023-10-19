@@ -7,6 +7,8 @@ metadata:
   namespace: argocd
   # finalizers:
   # - resources-finalizer.argocd.argoproj.io
+  annotations:
+    argocd.argoproj.io/manifest-generate-paths: .;../../charts
 spec:
   destination:
     namespace: argocd
@@ -16,8 +18,8 @@ spec:
     path: k8s/applications
     repoURL: https://github.com/jameshounshell/gke.git
     targetRevision: HEAD
-    kustomize:
-      version: v5.1.0
+    # kustomize:
+    # version: v5.1.0
   syncPolicy:
     automated:
       prune: true

@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose --file ../../docker-compose.yml convert
+    kompose.version: 1.31.2 (HEAD)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: k6
+  name: k6
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: k6
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose --file ../../docker-compose.yml convert
+        kompose.version: 1.31.2 (HEAD)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/intro-to-mltp-default: "true"
+        io.kompose.service: k6
+    spec:
+      containers:
+        - args:
+            - run
+            - -o
+            - experimental-prometheus-rw
+            - /scripts/mythical-loadtest.js
+          env:
+            - name: K6_DURATION
+              value: 3600s
+            - name: K6_PROMETHEUS_RW_SERVER_URL
+              value: http://mimir:9009/api/v1/push
+            - name: K6_PROMETHEUS_RW_TREND_AS_NATIVE_HISTOGRAM
+              value: "true"
+            - name: K6_VUS
+              value: "1"
+          image: grafana/k6
+          name: k6
+          resources: {}
+          volumeMounts:
+            - mountPath: /scripts
+              name: k6-claim0
+      restartPolicy: Always
+      volumes:
+        - name: k6-claim0
+          persistentVolumeClaim:
+            claimName: k6-claim0
+status: {}

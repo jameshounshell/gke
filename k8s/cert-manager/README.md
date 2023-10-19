@@ -9,7 +9,7 @@ This requires cloudflare api key secret. API key type is global and legacy (user
 Docs
 
 - [Issuer Config/Annotations](https://cert-manager.io/docs/usage/ingress/)
-    - This is important because it contains info about `cluster-issure` annotation which was hard to find.
+    - This is important because it contains info about `cluster-issuer` annotation which was hard to find.
 
 
 bootstrapping

@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose --file ../../docker-compose.yml convert
+    kompose.version: 1.31.2 (HEAD)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: agent
+  name: agent
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: agent
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose --file ../../docker-compose.yml convert
+        kompose.version: 1.31.2 (HEAD)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/intro-to-mltp-default: "true"
+        io.kompose.service: agent
+    spec:
+      containers:
+        - args:
+            - -config.file=/etc/agent/agent.yaml
+            - -server.http.address=0.0.0.0:12345
+          image: grafana/agent:v0.34.3
+          name: agent
+          ports:
+            - containerPort: 12345
+              hostPort: 12347
+              protocol: TCP
+            - containerPort: 12348
+              hostPort: 12348
+              protocol: TCP
+            - containerPort: 6832
+              hostPort: 6832
+              protocol: TCP
+            - containerPort: 55679
+              hostPort: 55679
+              protocol: TCP
+          resources: {}
+          volumeMounts:
+            - mountPath: /etc/agent/agent.yaml
+              name: agent-claim0
+      restartPolicy: Always
+      volumes:
+        - name: agent-claim0
+          persistentVolumeClaim:
+            claimName: agent-claim0
+status: {}

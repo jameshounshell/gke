@@ -10,6 +10,7 @@ helmCharts:
     crds:
       install: false
   releaseName: argo-cd
+  namespace: argocd
   version: 5.46.7 # v2.8.4
   repo: https://argoproj.github.io/argo-helm
 
@@ -18,6 +19,6 @@ resources:
 - "httproute.yaml"
 
 patches:
-- path: ./deployment-argo-cd-argocd-server.patch.yaml
+- path: "./deployment-argo-cd-argocd-server.patch.yaml"
 - path: "./argocd-cm.patch.yaml"
 

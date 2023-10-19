@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose --file ../../docker-compose.yml convert
+    kompose.version: 1.31.2 (HEAD)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: grafana-api-data
+  name: grafana-api-data
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: grafana-api-data
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose --file ../../docker-compose.yml convert
+        kompose.version: 1.31.2 (HEAD)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/intro-to-mltp-default: "true"
+        io.kompose.service: grafana-api-data
+    spec:
+      containers:
+        - image: grafana-api-data
+          name: grafana-api-data
+          resources: {}
+      restartPolicy: Always
+status: {}

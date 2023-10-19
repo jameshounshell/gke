@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose --file ../../docker-compose.yml convert
+    kompose.version: 1.31.2 (HEAD)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: mythical-database
+  name: mythical-database
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: mythical-database
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose --file ../../docker-compose.yml convert
+        kompose.version: 1.31.2 (HEAD)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/intro-to-mltp-default: "true"
+        io.kompose.service: mythical-database
+    spec:
+      containers:
+        - env:
+            - name: POSTGRES_PASSWORD
+              value: mythical
+          image: postgres:14.5
+          name: mythical-database
+          ports:
+            - containerPort: 5432
+              hostPort: 5432
+              protocol: TCP
+          resources: {}
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: postgres
+      restartPolicy: Always
+      volumes:
+        - name: postgres
+          persistentVolumeClaim:
+            claimName: postgres
+status: {}

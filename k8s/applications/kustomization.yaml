@@ -2,19 +2,39 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 namespace: argocd
-resources:
-- ./application-demo.yaml
-- "./application-argocd.yaml"
-- "./application-prometheus.yaml"
 
+helmGlobals:
+  chartHome: "../../helm-charts"
 
-# TODO: setup local chart to DRY out argo apps
-# helmCharts:
-# - name: grafana
+helmCharts:
+- name: argocd-app
+  valuesInline:
+    name: argocd
+- name: argocd-app
+  valuesInline:
+    name: demo
+# - name: argocd-app
 #   valuesInline:
-#     name: grafana
-#   repo: application
-#   releaseName: applicaton
+#     name: prometheus
+# - name: argocd-app
+#   valuesInline:
+#     name: lgtm-distributed
+- name: argocd-app
+  valuesInline:
+    name: dex
+- name: argocd-app
+  valuesInline:
+    name: gateway-system
+# - name: argocd-app
+#   valuesInline:
+#     name: cert-manager
+- name: argocd-app
+  valuesInline:
+    name: external-dns
 
-# helmGlobals:
-#   chartHome: "../../charts"
+
+# - name: intro-to-mltp
+#   releaseName: argocd-app
+#   valuesInline:
+#     name: intro-to-mltp # https://github.com/grafana/intro-to-mltp
+

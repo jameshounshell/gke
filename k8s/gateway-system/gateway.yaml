@@ -29,6 +29,17 @@ spec:
       mode: Terminate
       certificateRefs:
       - name: wildcard-meatcloud-io
+  # - name: https-wildcard-5556
+  #   protocol: HTTPS
+  #   port: 5556
+  #   hostname: "*.meatcloud.io"
+  #   allowedRoutes:
+  #     namespaces:
+  #       from: All
+  #   tls:
+  #     mode: Terminate
+  #     certificateRefs:
+  #     - name: wildcard-meatcloud-io
   # addresses:
   # - type: NamedAddress
   #   value: meatcloud

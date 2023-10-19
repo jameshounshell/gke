@@ -1,0 +1,1 @@
+argocd app diff $(basename $1) --local $1

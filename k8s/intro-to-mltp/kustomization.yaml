@@ -1,0 +1,36 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: intro-to-mltp
+resources:
+# - agent-claim0-persistentvolumeclaim.yaml
+# - agent-deployment.yaml
+# - agent-service.yaml
+# - grafana-api-data-deployment.yaml
+# - grafana-claim0-persistentvolumeclaim.yaml
+# - grafana-claim1-persistentvolumeclaim.yaml
+# - grafana-deployment.yaml
+# - grafana-service.yaml
+# - k6-claim0-persistentvolumeclaim.yaml
+# - k6-deployment.yaml
+# - loki-deployment.yaml
+# - loki-service.yaml
+# - mimir-claim0-persistentvolumeclaim.yaml
+# - mimir-deployment.yaml
+# - mimir-service.yaml
+# - mythical-database-deployment.yaml
+# - mythical-database-service.yaml
+# - mythical-queue-deployment.yaml
+# - mythical-queue-service.yaml
+# - mythical-recorder-deployment.yaml
+# - mythical-recorder-service.yaml
+# - mythical-requester-deployment.yaml
+# - mythical-requester-service.yaml
+# - mythical-server-deployment.yaml
+# - mythical-server-service.yaml
+# - postgres-persistentvolumeclaim.yaml
+# - pyroscope-claim0-persistentvolumeclaim.yaml
+# - pyroscope-deployment.yaml
+# - pyroscope-service.yaml
+# - tempo-claim0-persistentvolumeclaim.yaml
+# - tempo-deployment.yaml
+# - tempo-service.yaml
